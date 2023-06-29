@@ -9,11 +9,8 @@ cp .env.example .env
 ```
 3. Change database credentials in `.env` file to your own:
 ```
-MONGODB_USER=root
-MONGODB_PASSWORD=root
-MONGODB_PORT=27017
-MONGODB_HOST=127.0.0.1
 MONGODB_DATABASE=db
+MONGODB_CONNECTION_URI=mongodb://localhost:21017
 ```
 4. Run node server (default port is 8000):
 ``` 
