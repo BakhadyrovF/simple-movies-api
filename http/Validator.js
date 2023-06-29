@@ -86,12 +86,13 @@ export default class Validator {
     }
 
     _validateArray(field) {
-        return typeof Array.isArray(this.input(field));
+        return Array.isArray(this.input(field));
     }
 
     _validateDate(field) {
         try {
-            return new Date(this.input(field));
+            const date = Date(this.input(field));
+            return date instanceof Date;
         } catch (exception) {
             return false;
         }
