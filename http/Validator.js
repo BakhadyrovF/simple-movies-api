@@ -90,12 +90,7 @@ export default class Validator {
     }
 
     _validateDate(field) {
-        try {
-            const date = Date(this.input(field));
-            return date instanceof Date;
-        } catch (exception) {
-            return false;
-        }
+        return Date.parse(this.input(field)) !== 'NaN';
     }
 
     _validateMin(field, min) {
