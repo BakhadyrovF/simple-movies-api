@@ -13,6 +13,7 @@ const port = +(process.argv.filter((argument) => {
 const host = '127.0.0.1';
 
 const server = http.createServer(async (request, response) => {
+    response.setHeader('Access-Control-Allow-Origin', '*');
     try {
         const appResponse = await router.handleRequest(new Request().parseRequest(request));
 
