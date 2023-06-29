@@ -14,6 +14,14 @@ const host = '127.0.0.1';
 
 const server = http.createServer(async (request, response) => {
     response.setHeader('Access-Control-Allow-Origin', '*');
+    response.setHeader('Access-Control-Allow-Headers', '*');
+
+    if (request.method === 'OPTIONS') {
+        response.statusCode = 200;
+        response.end();
+        return;
+    }
+
     try {
         const appResponse = await router.handleRequest(new Request().parseRequest(request));
 
