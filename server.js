@@ -15,6 +15,7 @@ const host = '127.0.0.1';
 const server = http.createServer(async (request, response) => {
     response.setHeader('Access-Control-Allow-Origin', '*');
     response.setHeader('Access-Control-Allow-Headers', '*');
+    response.setHeader('Access-Control-Allow-Methods', '*');
 
     if (request.method === 'OPTIONS') {
         response.statusCode = 200;
