@@ -1,9 +1,8 @@
 
 
 
-
 export default class Validator {
-    ruleMessages = {
+    private ruleMessages: Record<string, string> = {
         required: ':field is required',
         string: ':field field must be of type string',
         number: ':field field must be of type number',
@@ -15,11 +14,15 @@ export default class Validator {
         size: ':field field size must be :size'
     }
 
-    static make(data, rules) {
+    private data: Record<string, any> = {};
+    private rules: Record<string, Array<string>> = {};
+    private messages: Record<string, Array<string>> = {};
+
+
+    static make(data: object, rules: Record<string, Array<string>>) {
         const validator = new Validator();
         validator.data = data;
         validator.rules = rules;
-        validator.messages = {};
 
         return validator;
     }
@@ -36,10 +39,11 @@ export default class Validator {
                     continue outer;
                 }
 
-                rule = rule.at(0).toUpperCase() + rule.slice(1);
+                rule = rule.at(0)?.toUpperCase() + rule.slice(1);
                 [rule, ruleArg] = rule.split(':');
+                const methodName = `_validate${rule}` as keyof Validator;
 
-                if (!this[`_validate${rule}`](field, ruleArg)) {
+                if (typeof this[methodName] === 'function' && !this[methodName](field, ruleArg)) {
                     rule = rule.toLowerCase();
                     if ((field in this.messages)) {
                         this.messages[field].push(this.getRuleMessage(rule, field, ruleArg));
@@ -53,7 +57,7 @@ export default class Validator {
         return Object.keys(this.messages).length === 0;
     }
 
-    input(field) {
+    input(field: string) {
         return this.data[field];
     }
 
@@ -61,11 +65,11 @@ export default class Validator {
         return this.messages
     }
 
-    getRuleMessage(rule, field, ruleArg) {
-        return this.ruleMessages[rule].replace(':field', field).replace(`:${rule}`, ruleArg);
+    getRuleMessage(rule: string, field: string, ruleArg: string | null = null) {
+        return this.ruleMessages[rule].replace(':field', field).replace(`:${rule}`, ruleArg ?? '');
     }
 
-    _validateRequired(field) {
+    _validateRequired(field: string) {
         return field in this.data;
     }
 
@@ -73,34 +77,34 @@ export default class Validator {
         return true;
     }
 
-    _validateBoolean(field) {
+    _validateBoolean(field: string) {
         return typeof this.input(field) === 'boolean';
     }
 
-    _validateString(field) {
+    _validateString(field: string) {
         return typeof this.input(field) === 'string';
     }
 
-    _validateNumber(field) {
+    _validateNumber(field: string) {
         return typeof this.input(field) === 'number';
     }
 
-    _validateArray(field) {
+    _validateArray(field: string) {
         return Array.isArray(this.input(field));
     }
 
-    _validateDate(field) {
-        return Date.parse(this.input(field)) !== 'NaN';
+    _validateDate(field: string) {
+        return !Number.isNaN(Date.parse(this.input(field)));
     }
 
-    _validateMin(field, min) {
+    _validateMin(field: string, min: string) {
         if (typeof this.input(field) === 'number') {
             return this.input(field) >= min;
         }
         return this.input(field)?.length >= min;
     }
 
-    _validateMax(field, max) {
+    _validateMax(field: string, max: string) {
         if (typeof this.input(field) === 'number') {
             return this.input(field) <= max;
         }
@@ -108,15 +112,11 @@ export default class Validator {
         return this.input(field)?.length <= max;
     }
 
-    _validateSize(field, size) {
+    _validateSize(field: string, size: string) {
         if (typeof this.input(field) === 'number') {
             return this.input(field) === Number(size);
         }
 
         return this.input(field)?.length === Number(size);
-    }
-
-    _isNullable(rules) {
-        rules.find((rule) => rule === 'nullable');
     }
 }

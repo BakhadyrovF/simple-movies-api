@@ -1,12 +1,12 @@
 import http from 'http';
-import Request from './http/Request.js';
+import Request from './http/Request.js'
 import { router } from './routes.js';
 
 
 
 
 
-console.log(process.argv);
+
 const port = +(process.argv.filter((argument) => {
     return argument.startsWith('--port=');
 })[0] ?? '8000').replace('--port=', '');
@@ -16,6 +16,7 @@ const server = http.createServer(async (request, response) => {
     response.setHeader('Access-Control-Allow-Origin', '*');
     response.setHeader('Access-Control-Allow-Headers', '*');
     response.setHeader('Access-Control-Allow-Methods', '*');
+    response.setHeader('Content-Type', 'application/json');
 
     if (request.method === 'OPTIONS') {
         response.statusCode = 200;
@@ -26,14 +27,10 @@ const server = http.createServer(async (request, response) => {
     try {
         const appResponse = await router.handleRequest(new Request().parseRequest(request));
 
-        for (let [name, value] of Object.entries(appResponse.headers)) {
-            response.setHeader(name, value);
-        }
-
         response.statusCode = appResponse.statusCode;
         response.write(JSON.stringify(appResponse.data));
         response.end();
-    } catch (exception) {
+    } catch (exception: any) {
         response.setHeader('Content-Type', 'application/json');
         response.statusCode = 400;
         response.write(JSON.stringify({

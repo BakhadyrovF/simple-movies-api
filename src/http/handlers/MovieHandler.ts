@@ -1,24 +1,27 @@
 import Response from "../Response.js";
 import Validator from "../Validator.js";
 import Database from "../../database.js";
-import MovieResource from "../resources/MovieResource.js";
 import { ObjectId } from "mongodb";
+import Request from "../Request.js";
 
 
 
 
-export default class BookHandler {
+export default class MovieHandler {
+    private db: Database;
     constructor() {
         this.db = new Database();
     }
 
-    async index() {
+    async index(): Promise<Response> {
         const movies = await this.db.all();
 
-        return MovieResource.collection(movies);
+        return new Response({
+            data: movies
+        });
     }
 
-    async show(request, id) {
+    async show(request: Request, id: string): Promise<Response> {
         const validator = Validator.make({ id }, { id: ['string', 'size:24'] })
         if (!validator.validate()) {
             return new Response({
@@ -35,10 +38,10 @@ export default class BookHandler {
             }, 404);
         }
 
-        return new MovieResource().apply(movie);
+        return new Response(movie);
     }
 
-    async store(request) {
+    async store(request: Request): Promise<Response> {
         const payload = await request.body;
         const validator = Validator.make(payload, {
             title: ['required', 'string', 'min:8', 'max:30'],
@@ -75,7 +78,7 @@ export default class BookHandler {
         }, 201);
     }
 
-    async update(request, id) {
+    async update(request: Request, id: string): Promise<Response> {
         const validator = Validator.make({ ...await request.body, id }, {
             id: ['string', 'size:24'],
             title: ['required', 'string', 'min:8', 'max:30'],
@@ -120,7 +123,7 @@ export default class BookHandler {
         })
     }
 
-    async delete(request, id) {
+    async delete(request: Request, id: string): Promise<Response> {
         const validator = Validator.make({ id }, { id: ['string', 'size:24'] })
         if (!validator.validate()) {
             return new Response({
