@@ -7,8 +7,7 @@ import dotenv from 'dotenv';
 
 
 
-dotenv.config();
-
+dotenv.config({ path: '../.env' });
 const uri = process.env.MONGODB_CONNECTION_URI;
 
 export default class Database {

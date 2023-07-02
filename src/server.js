@@ -6,7 +6,7 @@ import { router } from './routes.js';
 
 
 
-
+console.log(process.argv);
 const port = +(process.argv.filter((argument) => {
     return argument.startsWith('--port=');
 })[0] ?? '8000').replace('--port=', '');
