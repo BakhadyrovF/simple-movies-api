@@ -1,3 +1,8 @@
+## Version 1
+Technologies:    
+1. NodeJS
+2. MongoDB
+
 ## Installation
 1. Install node dependencies using npm (clean installation):
 ``` 
