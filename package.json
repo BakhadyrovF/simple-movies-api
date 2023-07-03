@@ -12,7 +12,7 @@
     },
     "scripts": {
         "build": "./node_modules/.bin/tsc -noEmit && ./node_modules/.bin/esbuild ./src/*.ts ./src/*/*.ts ./src/*/*/*.ts  --outdir=./build --platform=node --format=esm",
-        "watch": "./node_modules/.bin/tsc -noEmit && ./node_modules/.bin/esbuild ./src/*.ts ./src/*/*.ts --outdir=./build --platform=node --format=esm --watch",
+        "watch": "./node_modules/.bin/tsc -noEmit && ./node_modules/.bin/esbuild ./src/*.ts ./src/*/*.ts ./src/*/*/*.ts --outdir=./build --platform=node --format=esm --watch",
         "serve": "./node_modules/.bin/nodemon ./build/server.js --"
     }
 }
