@@ -1,3 +1,9 @@
+## Version 2
+Technologies:
+1. NodeJS
+2. Typescript
+3. MongoDB
+
 ## Installation
 1. Install node dependencies using npm (clean installation):
 ``` 
