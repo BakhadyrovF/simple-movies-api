@@ -18,12 +18,33 @@ cp .env.example .env
 MONGODB_DATABASE=db
 MONGODB_CONNECTION_URI=mongodb://localhost:27017
 ```
-4. Run node server (default port is 8000):
+4. Compile .ts files to .js into build directory:
 ``` 
-node server.js --port=8888
+npm run build
 ```
-5. Now, you can access `nodejs` app at http://localhost:8888 
-6. Routes list:
+5.  Run nodejs-server:
+``` 
+npm run serve
+```
+6. Now, you can access `nodejs` app at http://localhost:8000 
+
+
+## Additional
+### Run server with custom port:
+``` 
+npm run serve -- --port=9999
+```
+### Live-reloading
+For local development, you may want to use `Live-reloading`. Whenever you change file within `/src` directory all .ts files will re-build into `/build` directory:
+``` 
+npm run watch
+```
+So, for using `Live-reloading` you need to use 2 tabs in your terminal with following commands:
+1. `npm run watch`
+2. `npm run serve`    
+Now, that's it.
+
+## Routes list:
 ```
 GET api/movies (read collection of documents)
 POST api/movies (create a document)
