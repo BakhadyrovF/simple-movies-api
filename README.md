@@ -1,3 +1,7 @@
+## Requirements:
+1. [NodeJS](https://nodejs.org)
+2. [NPM](https://www.npmjs.com)
+
 ## Version 2
 Technologies:
 1. NodeJS
